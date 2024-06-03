@@ -14,6 +14,5 @@ You can use the Latitudes and Longitudes to get a map using the pre-made custom 
 
 To-do:
 
-- Troubleshoot geocoding robustness: Seems to be giving some duplicate lat/long values, maybe due to fictional addresses?
 - Find a way to securely store an API key so the user doesn't need one.
 - Choose a better trigger for it to update the geocoding, instead of "on click" record by record.
