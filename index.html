@@ -12,7 +12,7 @@
             grist.onRecords(function(records) {
               document.getElementById('readout').innerHTML = JSON.stringify(records, null, 2)
             });
-            const Url = "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+            const Url = "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json";
             fetch(Url)
               .then((response) => 
                 {
@@ -24,7 +24,7 @@
               )
               .then((data) => 
                 {
-                  console.log(data['results'][0]['geometry']);
+                  console.log(data[0]['name']);
                 }
               )
               .catch((error) => {
