@@ -46,6 +46,7 @@
             });
 
             let option1;
+            let selectedTableId;
 
             grist.onOptions((customOptions, interactionOptions) => {
                 document.getElementById("customLog").innerText = JSON.stringify(customOptions, null, -2);
@@ -76,6 +77,10 @@
                 document.getElementById(name).style.display = 'block';
             }
 
+            grist.on('message', (e) => {
+                if (e.tableId) { selectedTableId = e.tableId; }
+            });
+
             const endpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
 
             grist.onRecord((record) => {
@@ -103,7 +108,7 @@
                     .then((data) => {
                         let latlong = data['results'][0]['geometry']['location'];
                         console.log(latlong);
-                        return grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+                        return grist.docApi.applyUserActions([ ['UpdateRecord', selectedTableId, record.id, {
                             'Latitude': latlong['lat'],
                             'Longitude': latlong['lng']
                         }] ]);
