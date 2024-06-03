@@ -41,7 +41,7 @@
                 // Inform about required access level
                 requiredAccess: 'read table'
             });
-            grist.onOptions(function(options, interaction) {
+            grist.onOptions((customOptions, interactionOptions) => {
                 document.getElementById("customLog").innerText = JSON.stringify(customOptions, null, -2);
                 document.getElementById("interactionLog").innerText = JSON.stringify(interactionOptions, null, -2);
                 showPanel(customOptions ? 'main' : 'error');
@@ -68,8 +68,6 @@
                 document.getElementById("main").style.display = 'none';
                 document.getElementById(name).style.display = 'block';
             }
-
-            console.log(interaction.access_level);
 
             const Url = "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json";
 
