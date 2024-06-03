@@ -32,7 +32,7 @@
         <pre id="interactionLog">Waiting for data...</pre>
         <script>
             // Register global error handler.
-            window.onerror = (message) alert(String(message))
+            window.onerror = (message) => alert(String(message));
             grist.ready({
                 //register configuration handler to show configuration panel.
                 onEditOptions() {
@@ -40,9 +40,6 @@
                 },
                 // Inform about required access level
                 requiredAccess: 'read table'
-            });
-            grist.onRecords(function(records) {
-              document.getElementById('readout').innerHTML = JSON.stringify(records, null, 2)
             });
             grist.onOptions(function(options, interaction) {
                 document.getElementById("customLog").innerText = JSON.stringify(customOptions, null, -2);
@@ -73,9 +70,9 @@
             }
 
             console.log(interaction.access_level);
-            const endpoint = 'https://maps.googleapis.com/maps/api/geocode/json'
-            let addressParam = 'address=1600+Amphitheatre+Parkway,+Mountain+View,+CA'
+
             const Url = "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json";
+
             fetch(Url)
               .then((response) => 
                 {
