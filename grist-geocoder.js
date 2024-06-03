@@ -61,6 +61,7 @@ function geocode(address, key) {
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
       }
+      console.log(response.status);
       return response.json();
     })
     .catch((error) => {
@@ -73,6 +74,7 @@ async function updateRecordWithGeocode(record, key) {
     throw new Error('Could not read Address');
   }
   const data = await geocode(record.Address, key);
+  console.log(data)
   const latlong = data['results'][0]['geometry']['location'];
   console.log(latlong);
   await grist.docApi.applyUserActions([ ['UpdateRecord', selectedTableId, record.id, {
