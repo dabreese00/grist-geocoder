@@ -10,8 +10,26 @@
         <script>
             grist.ready();
             grist.onRecords(function(records) {
-                document.getElementById('readout').innerHTML = JSON.stringify(records, null, 2)
+              document.getElementById('readout').innerHTML = JSON.stringify(records, null, 2)
             });
+            const Url = "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+            fetch(Url)
+              .then((response) => 
+                {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`);
+                  }
+                  return response.json();
+                }
+              )
+              .then((data) => 
+                {
+                  console.log(data['results'][0]['geometry']);
+                }
+              )
+              .catch((error) => {
+                console.error(`Could not get products: ${error}`);
+              });
         </script>
     </body>
 </html>
