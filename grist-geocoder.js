@@ -1,6 +1,12 @@
 // Register global error handler.
 window.onerror = (message) => alert(String(message));
 
+async function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 grist.ready({
     //register configuration handler to show configuration panel.
     onEditOptions() {
