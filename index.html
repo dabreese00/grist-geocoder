@@ -33,6 +33,7 @@
         <script>
             // Register global error handler.
             window.onerror = (message) => alert(String(message));
+
             grist.ready({
                 //register configuration handler to show configuration panel.
                 onEditOptions() {
@@ -41,6 +42,9 @@
                 // Inform about required access level
                 requiredAccess: 'read table'
             });
+
+            let option1;
+
             grist.onOptions((customOptions, interactionOptions) => {
                 document.getElementById("customLog").innerText = JSON.stringify(customOptions, null, -2);
                 document.getElementById("interactionLog").innerText = JSON.stringify(interactionOptions, null, -2);
@@ -51,6 +55,7 @@
                 document.getElementById("getOption1").innerText = customOptions.option1 || '';
                 document.getElementById("getOption2").innerText = customOptions.option2 || '';
                 document.getElementById("app").style.display = 'block';
+                let option1 = customOptions.option1
             });
 
             // Define handler for the Save button.
@@ -73,13 +78,8 @@
 
             grist.onRecord((record) => {
                 let addressParam = 'address=1600+Amphitheatre+Parkway,+Mountain+View,+CA'
-                grist.widgetApi.getOption('option1')
-                    .then((value) => {
-                        endpoint + "?" + addressParam + "&" + `key=${value}`;
-                    })
-                    .then((url) => {
-                        console.log(url);
-                    })
+                let url = endpoint + "?" + addressParam + "&" + `key=${option1}`;
+                console.log(url);
 //                    .then((url) => fetch(url))
 //                    .then((response) => {
 //                        if (!response.ok) {
