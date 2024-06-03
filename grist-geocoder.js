@@ -85,6 +85,17 @@ async function updateRecordWithGeocode(record, key) {
   }] ]);
 }
 
+async function updateRecordsWithGeocode(records, key) {
+  for (const record of records) {
+    const address = record.Address;
+    if (address) {
+      await updateRecordWithGeocode(record, key);
+    }
+    await delay(1000);
+  }
+}
+
+
 grist.onRecord((record) => {
   if (!option1) {
     throw new Error('Please configure Option 1');
@@ -96,11 +107,5 @@ grist.onRecords((records) => {
   if (!option1) {
     throw new Error('Please configure Option 1');
   }
-  for (const record of records) {
-    const address = record.Address;
-    if (address) {
-      await updateRecordWithGeocode(record, option1);
-    }
-    await delay(1000);
-  }
+  updateRecordsWithGeocode(records, option1);
 }
