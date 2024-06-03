@@ -26,10 +26,12 @@
                 <button onclick="saveOptions()">Save</input>
             </div>
         </div>
+
         Custom options:
         <pre id="customLog">Waiting for data...</pre>
         Interaction options:
         <pre id="interactionLog">Waiting for data...</pre>
+
         <script>
             // Register global error handler.
             window.onerror = (message) => alert(String(message));
@@ -80,19 +82,19 @@
                 let addressParam = 'address=1600+Amphitheatre+Parkway,+Mountain+View,+CA';
                 let url = endpoint + "?" + addressParam + "&" + `key=${option1}`;
                 console.log(url);
-//                    .then((url) => fetch(url))
-//                    .then((response) => {
-//                        if (!response.ok) {
-//                            throw new Error(`HTTP error: ${response.status}`);
-//                        }
-//                        return response.json();
-//                    })
-//                    .then((data) => {
-//                        console.log(data);
-//                     })
-//                    .catch((error) => {
-//                        console.error(`Could not get geocode: ${error}`);
-//                    });
+                fetch(url)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(data);
+                     })
+                    .catch((error) => {
+                        console.error(`Could not get geocode: ${error}`);
+                    });
             });
         </script>
     </body>
