@@ -61,7 +61,6 @@ function geocode(address, key) {
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
       }
-      console.log(response.status);
       return response.json();
     })
     .catch((error) => {
@@ -74,9 +73,12 @@ async function updateRecordWithGeocode(record, key) {
     throw new Error('Could not read Address');
   }
   const data = await geocode(record.Address, key);
-  console.log(data)
+  // Apparently Google Maps API will error with HTTP status 200 still.
+  // Error status & message seems to be only in the JSON body.
+  if (data['status'] != 'OK') {
+    throw new Error(`API request ${data['status']} with msg: ${data['error_message']}`)
+  }
   const latlong = data['results'][0]['geometry']['location'];
-  console.log(latlong);
   await grist.docApi.applyUserActions([ ['UpdateRecord', selectedTableId, record.id, {
     'Latitude': latlong['lat'],
     'Longitude': latlong['lng']
