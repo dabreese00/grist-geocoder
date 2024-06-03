@@ -74,10 +74,10 @@
                 document.getElementById(name).style.display = 'block';
             }
 
-            const endpoint = 'https://maps.googleapis.com/maps/api/geocode/json'
+            const endpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
 
             grist.onRecord((record) => {
-                let addressParam = 'address=1600+Amphitheatre+Parkway,+Mountain+View,+CA'
+                let addressParam = 'address=1600+Amphitheatre+Parkway,+Mountain+View,+CA';
                 let url = endpoint + "?" + addressParam + "&" + `key=${option1}`;
                 console.log(url);
 //                    .then((url) => fetch(url))
@@ -90,9 +90,9 @@
 //                    .then((data) => {
 //                        console.log(data);
 //                     })
-                    .catch((error) => {
-                        console.error(`Could not get geocode: ${error}`);
-                    });
+//                    .catch((error) => {
+//                        console.error(`Could not get geocode: ${error}`);
+//                    });
             });
         </script>
     </body>
