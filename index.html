@@ -79,9 +79,17 @@
             const endpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
 
             grist.onRecord((record) => {
-                let addressParam = 'address=1600+Amphitheatre+Parkway,+Mountain+View,+CA';
-                let url = endpoint + "?" + addressParam + "&" + `key=${option1}`;
+                if (!record.Address) {
+                    throw new Error('Could not read Address');
+                }
+                if (!option1) {
+                    throw new Error('Please configure Option 1');
+                }
+                let addressParam = `address=${record.Address}`;
+                let keyParam = `key=${option1}`;
+                let url = endpoint + "?" + addressParam + "&" + keyParam;
                 console.log(url);
+
                 fetch(url)
                     .then((response) => {
                         if (!response.ok) {
@@ -90,7 +98,7 @@
                         return response.json();
                     })
                     .then((data) => {
-                        console.log(data);
+                        console.log(data['results'][0]['geometry']['location']);
                      })
                     .catch((error) => {
                         console.error(`Could not get geocode: ${error}`);
