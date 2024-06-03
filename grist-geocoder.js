@@ -46,23 +46,17 @@ grist.on('message', (e) => {
     if (e.tableId) { selectedTableId = e.tableId; }
 });
 
-function build_gmaps_url(address, key) {
+function buildGmapsUrl(address, key) {
   const endpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
   let addressParam = `address=${address}`;
   let keyParam = `key=${key}`;
   return endpoint + "?" + addressParam + "&" + keyParam;
 }
-      
-grist.onRecord((record) => {
-  if (!record.Address) {
-    throw new Error('Could not read Address');
-  }
-  if (!option1) {
-    throw new Error('Please configure Option 1');
-  }
-  url = build_gmaps_url(record.Address, option1);
+
+function geocode(address, key) {
+  url = buildGmapsUrl(address, key);
   console.log(url);
-  fetch(url)
+  return fetch(url)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`);
@@ -72,12 +66,24 @@ grist.onRecord((record) => {
     .catch((error) => {
       console.error(`Could not get geocode: ${error}`);
     })
-    .then((data) => {
-      let latlong = data['results'][0]['geometry']['location'];
-      console.log(latlong);
-      return grist.docApi.applyUserActions([ ['UpdateRecord', selectedTableId, record.id, {
-        'Latitude': latlong['lat'],
-        'Longitude': latlong['lng']
-      }] ]);
-     });
+}
+
+async function updateRecordWithGeocode(record, key) {
+  if (!record.Address) {
+    throw new Error('Could not read Address');
+  }
+  const data = await geocode(record.Address, key);
+  const latlong = data['results'][0]['geometry']['location'];
+  console.log(latlong);
+  await grist.docApi.applyUserActions([ ['UpdateRecord', selectedTableId, record.id, {
+    'Latitude': latlong['lat'],
+    'Longitude': latlong['lng']
+  }] ]);
+}
+
+grist.onRecord((record) => {
+  if (!option1) {
+    throw new Error('Please configure Option 1');
+  }
+  updateRecordWithGeocode(record, option1);
 });
