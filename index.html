@@ -42,7 +42,7 @@
                     showPanel('configuration');
                 },
                 // Inform about required access level
-                requiredAccess: 'read table'
+                requiredAccess: 'full'
             });
 
             let option1;
@@ -97,15 +97,17 @@
                         }
                         return response.json();
                     })
+                    .catch((error) => {
+                        console.error(`Could not get geocode: ${error}`);
+                    })
                     .then((data) => {
                         let latlong = data['results'][0]['geometry']['location'];
                         console.log(latlong);
-                        record.Latitude = latlong['lat']
-                        record.Longitude = latlong['lng']
-                     })
-                    .catch((error) => {
-                        console.error(`Could not get geocode: ${error}`);
-                    });
+                        return grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+                            'Latitude': latlong['lat'],
+                            'Longitude': latlong['lng']
+                        }] ]);
+                     });
             });
         </script>
     </body>
