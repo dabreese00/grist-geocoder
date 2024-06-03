@@ -108,4 +108,4 @@ grist.onRecords((records) => {
     throw new Error('Please configure Option 1');
   }
   updateRecordsWithGeocode(records, option1);
-}
+});
